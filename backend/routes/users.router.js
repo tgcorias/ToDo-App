@@ -1,55 +1,42 @@
 const express = require('express');
 const router = express.Router();
+const UsersService = require('../services/users.service');
+const service = new UsersService;
 
-router.get('/', (req, res) => {
-  const users = {
-    email: 'Test',
-    password: 'test',
-  }
+router.get('/',
+  async (req, res) => {
+  const users = await service.getAll();
   res.json(users);
 });
 
-
-router.get('/:id', (req, res) => {
-  const id = req.params;
-  const users = {
-    id: 1,
-    email: 'Test',
-    password: 'test',
-  }
-  res.json(users);
+router.get('/:id',
+  async (req, res) => {
+    const { id } = req.params;
+    const user = await service.getOne(id);
+    res.json(user);
 });
 
-
-router.post('/', (req, res) => {
-  const newUser = req.body;
-  const users = {
-    id: 1,
-    email: 'Test',
-    password: 'test',
-  }
-  res.json(users.push(newUser));
+router.post('/',
+  async (req, res) => {
+    const data = req.body;
+    const newUSer = await service.create(data)
+    res.json(newUSer);
 });
 
+router.patch('/:id',
+  async (req, res) => {
+    const {id} = req.params;
+    const changes = req.body;
+    const update = await service.update(id, changes);
 
-router.patch('/:id', (req, res) => {
-  const id = req.params;
-  const changes = req.body;
-  const users = changes.users;
-
-  res.json(users);
+    res.json(update);
 })
 
-router.delete('/:id', (req, res) => {
-  const id = req.params;
-  const users = {
-    id: 1,
-    email: 'Test',
-    password: 'test',
-  }
-  res.json(users);
+router.delete('/:id',
+  async (req, res) => {
+    const {id} = req.params;
+    const user = await service.delete(id);
+    res.json(user);
 })
 
 module.exports = router;
-
-
