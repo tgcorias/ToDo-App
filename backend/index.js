@@ -1,6 +1,8 @@
 const express = require('express');
 const routerAPI = require('./routes/index.js');
 
+const {errorHandler, boomErrorHandler} = require ('./middlewares/error.handler.js');
+
 const cors = require('cors');
 
 const whitelist = ['http://localhost:3000/', 'http://localhost:3001'];
@@ -26,6 +28,9 @@ app.get('/', (req, res) =>
 );
 
 routerAPI(app);
+
+app.use(boomErrorHandler);
+app.use(errorHandler);
 
 
 app.listen(port, () =>{

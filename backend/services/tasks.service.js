@@ -31,7 +31,7 @@ class tasksService {
   async getOne(id){
     const task = this.tasks.find(task => task.id === parseInt(id));
     if (!task){
-      throw boom.notFound('Product not found')
+      throw boom.notFound(`Task with id ${id} doesn't found`)
     }else {
         return task;
      }
@@ -57,7 +57,7 @@ class tasksService {
   async delete(id){
     const index = this.tasks.findIndex(task => task.id === parseInt(id));
     if (index === -1) {
-      throw boom.notFound('Product not found');
+      throw boom.notFound(`Task with id ${id} doesn't found`);
     }
     this.tasks.splice(index, 1);
     return { id };
