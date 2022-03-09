@@ -18,8 +18,8 @@ const updateTaskSchema = Joi.object({
     completed: completed
 })
 
-const deleteTaskSchema = Joi.object({
+const getTaskSchema = Joi.object({
   id: id.required()
 })
 
-module.exports = { createTaskSchema, updateTaskSchema, deleteTaskSchema };
+module.exports = { createTaskSchema, updateTaskSchema, getTaskSchema };

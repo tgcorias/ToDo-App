@@ -57,7 +57,7 @@ class usersService {
   async delete(id){
     const index = this.users.findIndex(user => user.id === id);
     if (index === -1) {
-      throw boom.notFound('Product not found');
+      throw boom.notFound(`User with id ${id} not found`);
     }
     this.users.splice(index, 1);
     return { id };

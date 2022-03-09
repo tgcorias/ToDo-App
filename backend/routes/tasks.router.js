@@ -1,6 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const TasksService = require('../services/tasks.service');
+
+const validatorHandler = require('../middlewares/validator.handler.js');
+const {
+  createTaskSchema,
+  updateTaskSchema,
+  getTaskSchema
+} = require('../schemas/task.schema.js');
+
 const service = new TasksService;
 
 router.get('/',
@@ -9,12 +17,13 @@ router.get('/',
     const tasks = await service.getAll();
     res.json(tasks);
   }catch(err){
-    next(error);
+    next(err);
   }
 });
 
 router.get('/:id',
   async (req, res, next) => {
+    validatorHandler(getTaskSchema, 'params');
     try{
       const {id} = req.params;
       const task = await service.getOne(id);
@@ -26,6 +35,7 @@ router.get('/:id',
 
 router.post('/',
   async (req, res, next) => {
+    validatorHandler(createTaskSchema, 'body');
     try{
       const data = req.body;
       const newtask = await service.create(data)
@@ -37,6 +47,8 @@ router.post('/',
 
 router.patch('/:id',
   async (req, res, next) => {
+    validatorHandler(getTaskSchema, 'params');
+    validatorHandler(updateTaskSchema, 'body');
     try{
       const {id} = req.params;
       const changes = req.body;
@@ -49,6 +61,7 @@ router.patch('/:id',
 
 router.delete('/:id',
   async (req, res, next) => {
+    validatorHandler(getTaskSchema, 'params');
     try{
       const {id} = req.params;
       const task = await service.delete(id);
